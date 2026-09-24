@@ -1,0 +1,51 @@
+# Raport Allure z testów na GitHub Pages (klocek „raport” publikacji z labu). Allure czyta JUnit z scripts/testy-ci.sh.
+name: raport
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  raport:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U test -d test" --health-interval 2s --health-timeout 3s --health-retries 30
+    env:
+      CI: 'true'
+      DATABASE_URL: postgres://test:test@localhost:5432/test
+      RAPORTY_KATALOG: raporty
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: sh scripts/testy-ci.sh || echo "TESTY_CZERWONE=1" >> "$GITHUB_ENV"
+      - run: npx --yes allure-commandline@2.46.1 generate raporty/junit -o raport-allure --clean
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: raport-allure
+      - id: pages
+        uses: actions/deploy-pages@v5
+      - if: env.TESTY_CZERWONE == '1'
+        run: echo "Testy czerwone — raport opublikowany, ale przebieg oznaczony jako błąd" && exit 1

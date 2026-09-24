@@ -1,0 +1,41 @@
+# Testy przy każdym PR i na main (klocek „testy” publikacji z labu). Te same testy co w labie: scripts/testy-ci.sh.
+name: testy
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  testy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U test -d test" --health-interval 2s --health-timeout 3s --health-retries 30
+    env:
+      CI: 'true'
+      DATABASE_URL: postgres://test:test@localhost:5432/test
+      RAPORTY_KATALOG: raporty
+      POKRYCIE_KATALOG: coverage
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: sh scripts/testy-ci.sh
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: raporty-testow
+          path: raporty/junit/
+          if-no-files-found: ignore
