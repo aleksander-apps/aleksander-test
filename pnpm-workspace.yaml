@@ -1,0 +1,14 @@
+# pnpm 11: skrypty instalacyjne zależności wyłączone jawnie (obraz i tor instalują z --ignore-scripts).
+allowBuilds:
+  esbuild: false
+  sharp: false
+  unrs-resolver: false
+
+# Bezpieczeństwo zależności (runbook zaleznosci.md) — drugi zamek obok bramki pakietów.
+minimumReleaseAge: 10080
+minimumReleaseAgeStrict: true
+minimumReleaseAgeIgnoreMissingTime: false
+blockExoticSubdeps: true
+strictDepBuilds: true
+trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 43200

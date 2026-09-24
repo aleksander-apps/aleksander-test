@@ -1,0 +1,38 @@
+{
+  "name": "aleksander-test",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.27.0",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0 --port 3300",
+    "build": "next build",
+    "start": "next start --port 3300",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"testy/unit/**/*.test.{ts,mjs}\"",
+    "test:unit": "node --test \"testy/unit/**/*.test.{ts,mjs}\"",
+    "test:integration": "node --test --test-concurrency=1 \"testy/integracja/**/*.test.ts\"",
+    "test:e2e": "playwright test",
+    "test:ci": "sh scripts/testy-ci.sh",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "node scripts/migruj.mjs",
+    "db:seed": "node scripts/seed.mjs"
+  },
+  "dependencies": {
+    "drizzle-orm": "0.45.2",
+    "next": "16.3.5",
+    "postgres": "3.4.9",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "24.13.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "c8": "11.0.0",
+    "drizzle-kit": "0.31.10",
+    "typescript": "6.0.3"
+  }
+}
