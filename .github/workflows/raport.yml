@@ -40,7 +40,8 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: sh scripts/testy-ci.sh || echo "TESTY_CZERWONE=1" >> "$GITHUB_ENV"
-      - run: npx --yes allure-commandline@2.46.1 generate raporty/junit -o raport-allure --clean
+      - run: python3 .github/skrypty/junit-dla-allure.py
+      - run: npx --yes allure-commandline@2.46.1 generate raporty/allure-wejscie -o raport-allure --clean
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:
