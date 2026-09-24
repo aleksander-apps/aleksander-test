@@ -1,0 +1,21 @@
+# Zależności i artefakty builda — nigdy w repo (konflikty PR-ów fabryki, 24.09)
+node_modules/
+.pnpm-store/
+.next/
+out/
+build/
+dist/
+coverage/
+raporty/
+playwright-report/
+test-results/
+*.tsbuildinfo
+next-env.d.ts
+
+# Sekrety
+.env
+.env.*
+!.env.example
+
+.DS_Store
+*.log

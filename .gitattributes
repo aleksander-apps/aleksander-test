@@ -1,0 +1,14 @@
+# Publikacja na GitHubie (AP-7/AP-8): git archive pomija pliki wewnętrzne labu.
+Jenkinsfile export-ignore
+.devcontainer/ export-ignore
+.copier-answers.yml export-ignore
+docker-compose.test.yml export-ignore
+# Obraz dla labu (Harbor, bramka pakietów) — wersja publiczna buduje się na Vercelu bez Dockerfile.
+Dockerfile export-ignore
+.dockerignore export-ignore
+# .npmrc i pnpm-lock.yaml wskazują bramkę pakietów labu — job publikacji podmienia .npmrc i robi świeży lock z registry.npmjs.org (AP-8).
+AGENTS.md export-ignore
+CLAUDE.md export-ignore
+docs/99-dziennik.md export-ignore
+publikacja.yaml export-ignore
+publikacja.yaml.przyklad export-ignore
